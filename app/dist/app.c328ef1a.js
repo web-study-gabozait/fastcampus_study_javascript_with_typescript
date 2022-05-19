@@ -119,7 +119,21 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   return newRequire;
 })({"app.js":[function(require,module,exports) {
 var ajax = new XMLHttpRequest();
-ajax.open("GET", "https://api.hnpwa.com/v0/news/1.json", false);
+var NEW_URL = "https://api.hnpwa.com/v0/news/1.json";
+ajax.open("GET", NEW_URL, false);
+ajax.send(); // console.log(ajax.response);
+
+var newsFeed = JSON.parse(ajax.response); // console.log(newsFeed);
+
+var ul = document.createElement("ul");
+
+for (var i = 0; i < newsFeed.length; i++) {
+  var li = document.createElement("li");
+  li.innerHTML = newsFeed[i].title;
+  ul.appendChild(li);
+}
+
+var root = document.getElementById("root").appendChild(ul);
 },{}],"../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -148,7 +162,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63720" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51054" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
