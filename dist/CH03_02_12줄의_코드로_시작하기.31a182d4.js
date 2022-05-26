@@ -136,15 +136,16 @@ var getData = function getData(URL) {
 var NewsFeed = function NewsFeed() {
   var newsFeed = getData(NEW_URL);
   var newslist = [];
-  newslist.push("<ul>");
+  var template = "\n    <div>\n      <h1>Hacker News</h1>\n      <ul>\n      {{__news_feed__ }}\n      </ul>\n      <div>\n      {{__prev_page__}}\n      {{__next_page__}}\n      </div>\n    </div>\n  ";
 
   for (var i = (store.currentPage - 1) * 10; i < store.currentPage * 10; i++) {
-    newslist.push("\n      <li>\n        <a href=\"#/show/".concat(newsFeed[i].id, "\">\n        ").concat(newsFeed[i].title, " (").concat(newsFeed[i].comments_count, ")\n        </a>\n      </li>\n    ")); //innerHTML은 문자열 안에 태그(마크업 구조)가 들어있다면 태그를 DOM으로 인식을 하여 읽는다.
+    newslist.push("\n    <li>\n    <a href=\"#/show/".concat(newsFeed[i].id, "\">\n    ").concat(newsFeed[i].title, " (").concat(newsFeed[i].comments_count, ")\n    </a>\n    </li>\n    ")); //innerHTML은 문자열 안에 태그(마크업 구조)가 들어있다면 태그를 DOM으로 인식을 하여 읽는다.
   }
 
-  newslist.push("</ul>");
-  newslist.push("\n    <div>\n      <a href=\"#/page/".concat(store.currentPage > 1 ? store.currentPage - 1 : 1, "\" style= \"color:").concat(store.currentPage > 1 ? "#333" : "#c4c4c4", "; font-size: 30px;\">\uC774\uC804 \uD398\uC774\uC9C0</a>\n      <a href=\"#/page/").concat(store.currentPage < 3 ? store.currentPage + 1 : 3, "\" style= \"color:").concat(store.currentPage < 3 ? "#333" : "#c4c4c4", "; font-size: 30px;\">\uB2E4\uC74C \uD398\uC774\uC9C0</a>\n    </div>\n  "));
-  container.innerHTML = newslist.join("");
+  template = template.replace("{{__news_feed__}}", newslist.join(""));
+  template = template.replace("{{__prev_page__}}", "<a href=\"#/page/".concat(store.currentPage > 1 ? store.currentPage - 1 : 1, "\" style= \"color:").concat(store.currentPage > 1 ? "#333" : "#c4c4c4", ";\">\uC774\uC804 \uD398\uC774\uC9C0</a>"));
+  template = template.replace("{{__next_page__}}", "<a href=\"#/page/".concat(store.currentPage < 3 ? store.currentPage + 1 : 3, "\" style= \"color:").concat(store.currentPage < 3 ? "#333" : "#c4c4c4", ";\">\uB2E4\uC74C \uD398\uC774\uC9C0</a>"));
+  container.innerHTML = template;
 };
 
 var newsDetail = function newsDetail() {
